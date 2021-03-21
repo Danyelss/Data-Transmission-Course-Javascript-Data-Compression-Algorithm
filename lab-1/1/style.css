@@ -1,0 +1,28 @@
+button {
+    padding: 30px;
+    background-color: red;
+    font-size: 50px;
+}
+
+#minusButton{
+  background-color: gray;
+  border: none;
+  position: relative;
+  left: 2.5vh;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+#doubleButton{
+  background-color: pink;
+  border: none;
+  position: relative;
+  left: 2.5vh;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+#counter{
+    font-size: 50px ;
+
+}
