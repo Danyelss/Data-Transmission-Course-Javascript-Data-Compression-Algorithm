@@ -1,0 +1,58 @@
+body{
+    background-color: rebeccapurple;
+}
+
+#FirstNumber{
+background-color: #373737;
+  min-height: 1vh;
+  max-height: calc(10px + 7vmin);
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  text-align: center;
+}
+
+#SecondNumber{
+background-color: #373737;
+  min-height: 1vh;
+  max-height: calc(10px + 7vmin);
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  text-align: center;
+}
+
+#Operator{
+background-color: gray;
+  min-height: 1vh;
+  max-height: calc(10px + 7vmin);
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  text-align: center;
+}
+
+div{
+    background-color: #373737;
+    min-height: 1vh;
+    max-height: calc(10px + 7vmin);
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    text-align: center;
+}
+
+#equalsButton{
+    background-color: #373737;
+    min-height: 1vh;
+    max-height: calc(10px + 7vmin);
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    text-align: center;
+}

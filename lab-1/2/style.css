@@ -1,0 +1,16 @@
+#minusButton{
+  background-color: gray;
+  padding: 10px;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  border-radius: 90%;
+}
+#plusButton{
+  background-color: green;
+  padding: 10px;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  border-radius: 90%;
+}
