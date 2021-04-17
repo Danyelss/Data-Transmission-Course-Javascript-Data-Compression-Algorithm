@@ -10,6 +10,8 @@ let {
 } = require('../lib/lib');
 const timestamp = require('time-stamp');
 
+let chalk = require('chalk');
+
 app.listen(3001, function () {
   console.log('Storage server running @ localhost:3001');
 });
