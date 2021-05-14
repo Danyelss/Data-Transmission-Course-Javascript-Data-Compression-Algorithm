@@ -8,7 +8,6 @@ let {
   getInvertedCodes,
   encodeOneWord,
   decodeOneWord,
-  readBuffer,
   codeTableFunction,
   Mapping,
   shannonFanoRec,
@@ -16,7 +15,9 @@ let {
   convertCharToBinary,
   convertBufferToChar,
   convertBinaryToString,
-  reverseObject
+  reverseObject,
+  dec2bin,
+  bin2dec
 
 } = require('../lib/lib');
 const timestamp = require('time-stamp');
@@ -65,6 +66,52 @@ app.post('/compressed', function (request, response) {
     )} and decoded '${uncompressed}'`
   });
 });
+
+app.post('/text', function (request, response) {
+  const payloadSizeInBytes = request.get('content-length');
+  console.log(`Received ${payloadSizeInBytes * 8} bits`);
+  let text = request.rawBody;
+  console.log(text);
+  const fileName = 'plain-text.txt';
+  fs.appendFileSync(fileName, `${text}\n-----------\n`);
+  response.json({ status: `Received ${payloadSizeInBytes * 8} bits`});
+});
+
+app.post('/multipleCompressedWords', function (request, response) {
+  const payloadSizeInBytes = request.get('content-length');
+  console.log(`Received ${payloadSizeInBytes * 8} bits`);
+  let buf = Buffer.from(request.rawBody, 'binary');
+  const parser = new Parser().array('data', {
+    type: 'uint8',
+    length: 2
+  });
+
+  const binaryData = parser.parse(buf).data;
+  console.log(`Received binary data: ${bitsUtils.printBuffer(binaryData)}`);
+
+  const filename = '../lib/common-words.txt';
+  const words = loadWords(filename);
+  const codes = getCodes(words);
+  const invertedCodes = getInvertedCodes(codes);
+
+  console.time('Decompression');
+  const uncompressed = decodeOneWord(binaryData, invertedCodes);
+  console.timeEnd('Decompression');
+
+  const fileName = 'decompressed.txt';
+  fs.appendFileSync(
+    fileName,
+    `${timestamp.utc('YYYY/MM/DD:mm:ss')} ${uncompressed}\n`
+  );
+  console.log(`<${uncompressed}> saved to ${fileName}`);
+
+  response.json({
+    status: `Received ${bitsUtils.printBuffer(
+      binaryData
+    )} and decoded '${uncompressed}'`
+  });
+});
+
 
 var charTrue = 1;
 var codesMap = new Map();
@@ -120,62 +167,23 @@ app.post('/shannonFanoEncodedText', function (request, response) {
     if( decodedChar == '\n' ){
         decodedChar = '\r\n';
     }
-    decodedString += decodedChar;
-    console.log();
-    console.log(decodedString);
-    console.log(totalBits);
 
-    fs.appendFile('decodedShannonFanoToFile.txt', decodedChar, function (err) {
+    decodedString += decodedChar;
+
+
+    if( totalBits > 5934 ){ // show output on comand line
+        console.log(decodedString);
+
+
+    fs.appendFileSync('decodedShannonFanoToFile.txt', decodedString, function (err) {
           if (err) throw err;
-        });  // Append data
+        });  // Append data to file
+    }
+
+    console.log(totalBits);
 
     response.json({
     status: `Received ${decodedChar} char`
 
     });
-});
-
-app.post('/text', function (request, response) {
-  const payloadSizeInBytes = request.get('content-length');
-  console.log(`Received ${payloadSizeInBytes * 8} bits`);
-  let text = request.rawBody;
-  console.log(text);
-  const fileName = 'plain-text.txt';
-  fs.appendFileSync(fileName, `${text}\n-----------\n`);
-  response.json({ status: `Received ${payloadSizeInBytes * 8} bits`});
-});
-
-app.post('/multipleCompressedWords', function (request, response) {
-  const payloadSizeInBytes = request.get('content-length');
-  console.log(`Received ${payloadSizeInBytes * 8} bits`);
-  let buf = Buffer.from(request.rawBody, 'binary');
-  const parser = new Parser().array('data', {
-    type: 'uint8',
-    length: 1
-  });
-
-  const binaryData = parser.parse(buf).data;
-  console.log(`Received binary data: ${bitsUtils.printBuffer(binaryData)}`);
-
-  const filename = '../lib/common-words.txt';
-  const words = loadWords(filename);
-  const codes = getCodes(words);
-  const invertedCodes = getInvertedCodes(codes);
-
-  console.time('Decompression');
-  const uncompressed = decodeOneWord(binaryData, invertedCodes);
-  console.timeEnd('Decompression');
-
-  const fileName = 'decompressed.txt';
-  fs.appendFileSync(
-    fileName,
-    `${timestamp.utc('YYYY/MM/DD:mm:ss')} ${uncompressed}\n`
-  );
-  console.log(`<${uncompressed}> saved to ${fileName}`);
-
-  response.json({
-    status: `Received ${bitsUtils.printBuffer(
-      binaryData
-    )} and decoded '${uncompressed}'`
-  });
 });

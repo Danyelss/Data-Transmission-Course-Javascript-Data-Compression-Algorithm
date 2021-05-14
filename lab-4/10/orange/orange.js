@@ -5,14 +5,13 @@ let {
   getInvertedCodes,
   encodeOneWord,
   decodeOneWord,
-  readBuffer,
   codeTableFunction,
   Mapping,
   shannonFanoRec,
   bufferCreationAndAssign,
-  convertCharToBinary,
-  convertBufferToChar,
-  convertBinaryToString
+  bin2dec,
+  dec2bin,
+  convertCharToBinary
 } = require('../lib/lib');
 const chalk = require('chalk');
 const fs = require('fs');
@@ -134,11 +133,6 @@ function postOnShannonFanoEncodedText(buf){
                 'Content-Type': 'text/html'
             }
         })
-        .then(res => {
-         //   console.log(
-        //        `Response from ${chalk.greenBright('kiwi')}: "${res.data.status}"`
-        //    );
-        });
 }
 
 function tableToBuffer(codeTable){
@@ -146,24 +140,14 @@ function tableToBuffer(codeTable){
         var buf = bufferCreationAndAssign(convertCharToBinary(codeTable[i][0]));
         postOnTableCodes(buf);
 
-        for( let k = 0; k < 1000; k++ ){
-            k++;
-            k--;
-        }
-
         buf = bufferCreationAndAssign( codeTable[i][1] );
         postOnTableCodes(buf);
-
-        for( let k = 0; k < 1000; k++ ){
-            k++;
-            k--;
-        }
     }
 }
 
 function textBuffer(text){
     for( let i = 0; i < text.length; i++ ){
-        if(text[i] != '\r'){
+        if(text[i] != '\r'){                               // maybe try to send char in case of buff.length > 8?
         var ok = true;
             for( let j = 0; j < codeTable.length && ok == true ; j++ ){
                 if( codeTable[j][0] == text[i] ){
@@ -172,15 +156,17 @@ function textBuffer(text){
 
                     ok = false;
 
-                    for( let k = 0; k < 1000; k++ ){
+                    for( let k = 0; k < 200000; k++ ){
                         k++;
                         k--;
                     }
+
+
                     totalBits += 8;
 
                 }
             }
-        }
+        } else totalBits+=8;
     }
 }
 
@@ -198,14 +184,10 @@ let text = sendFromFile();
 let mappedText = Mapping(text);
 let codeTable = codeTableFunction(shannonFanoRec(mappedText));
 
-//console.log(codeTable);
+console.log(codeTable);
 
-tableToBuffer(codeTable);
+tableToBuffer(codeTable); // send table
 
-textBuffer(text);
+textBuffer(text);  // send text
 
 console.log(totalBits);
-
-
-
-

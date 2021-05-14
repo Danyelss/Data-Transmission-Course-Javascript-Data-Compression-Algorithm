@@ -65,16 +65,6 @@ console.log(decodeOneWord(testBuffers, invertedCodes));
 
 // Dani
 
-function readBuffer(buffer){
-    let result = '';
-
-    for( let i = 0; i < buffer.length; i++ ){
-        result += bitsUtils.readBit(buffer, i, i );
-    }
-
-    return result;
-}
-
 function convertCharToBinary(char){
     var binaryChar = char.charCodeAt(0).toString(2);
         while(binaryChar.length < 8 ){
@@ -92,21 +82,13 @@ function convertBufferToChar(buffer){
 }
 
 function convertBinaryToString(buffer){
-    var result = '';
-
-    for( let i = 0; i < buffer.length; i++ ){
-        result += bitsUtils.readBit(buffer, i, i );
-    }
-
-    return result;
+    return dec2bin(buffer.toString());
 }
 
 function bufferCreationAndAssign(code){
    var buffer = Buffer.alloc(code.length);
 
-   for( let i = 0; i < code.length; i++ ){
-        bitsUtils.setBit( buffer, i, i, parseInt(code[i]) );
-   }
+   buffer = bin2dec(code);
 
    return buffer;
 }
@@ -119,6 +101,10 @@ String.prototype.unshift = function(el) {
 
 function dec2bin(dec) {
   return (dec >>> 0).toString(2);
+}
+
+function bin2dec(bin){
+  return parseInt(bin, 2).toString(10);
 }
 
 // inverse Map
@@ -134,7 +120,7 @@ const reverseObject = (obj) => {
    return newObj;
 };
 
-/*                        for Shannon-Fano                     */
+/*                         Shannon-Fano                     */
 {
 function reverseMap(map) {
     aux = map.slice(0).reverse().map(
@@ -245,16 +231,14 @@ module.exports = {
   getInvertedCodes,
   encodeOneWord,
   decodeOneWord,
-  readBuffer,
   codeTableFunction,
   Mapping,
   shannonFanoRec,
   bufferCreationAndAssign,
   convertCharToBinary,
   convertBufferToChar,
+  reverseObject,
   convertBinaryToString,
-  reverseObject
-
-
-
+  dec2bin,
+  bin2dec
 };

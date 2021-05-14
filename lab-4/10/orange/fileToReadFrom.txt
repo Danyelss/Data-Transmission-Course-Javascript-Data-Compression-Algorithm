@@ -6,7 +6,7 @@ isnt any n
 for the n sake
 ok, i fixed it
 
-this is just to test if on larger data is more eficient
+this is just to test if on larger data is more efficient
 
 
 asdasfsagfsadfgsdgsd
@@ -97,4 +97,6 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasfoipk3409gfkapKo0KF093IKF09EWSKFO9
 oikg40eoiwjkhg90oiekmgopekp
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasfoipk3409gfkapKo0KF093IKF09EWSKFO9KSE90FGK4W
 oikg40eoiwjkhg90oiekmgopekp
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa    
+
+so it turned out to be a compression of 76.072580646 % or 45.556451612 % depends on his mood
